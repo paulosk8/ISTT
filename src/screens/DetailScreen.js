@@ -14,7 +14,7 @@ const DetailScreen = ({ route }) => {
   ];
 
   const handleWhatsAppPress = () => {
-    const phoneNumber = '1234567890'; // Reemplaza con tu número de WhatsApp
+    const phoneNumber = '+593980228166'; // Reemplaza con tu número de WhatsApp
     const message = 'Hola, me gustaría obtener más información.';
     const url = `whatsapp://send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
 
