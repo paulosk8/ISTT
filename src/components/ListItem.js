@@ -1,23 +1,26 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Dimensions } from 'react-native';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const ListItem = ({ item, onPress }) => (
   <TouchableOpacity style={styles.container} onPress={() => onPress(item)}>
-    <Image source={item.image} style={styles.image} />
-    <View style={styles.textContainer}>
-      <Text style={styles.title}>{item.title}</Text>
-      <Text style={styles.description}>{item.description}</Text>
-    </View>
+     <ImageBackground source={item.image} style={styles.imageBackground} imageStyle={styles.image}>
+      <View style={styles.overlay}>
+        <Text style={styles.title}>{item.title}</Text>
+      </View>
+     </ImageBackground>
   </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    padding: 16,
+    flex: 1,
+    width: SCREEN_WIDTH - 32,
     marginVertical: 8,
-    backgroundColor: '#fff',
     borderRadius: 8,
+    overflow: 'hidden', // Ensure child elements are clipped to the border radius
+    alignSelf: 'center', // Centra el contenedor horizontalmente
     // Shadow for iOS
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
@@ -26,25 +29,24 @@ const styles = StyleSheet.create({
     // Shadow for Android
     elevation: 5,
   },
+  imageBackground: {
+    width: '100%',
+    height: 160,
+    justifyContent: 'flex-end', // Align overlay at the bottom
+  },
   image: {
-    resizeMode: 'contain',
-    width: 120,
-    height: 80,
-    marginRight: 16,
     borderRadius: 8,
   },
-  textContainer: {
-    flex: 1,
-    justifyContent: 'center',
+  overlay: {
+    width: '100%',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Black overlay with 50% opacity
+    padding: 10,
+    alignItems: 'flex-start',
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#212121',
-  },
-  description: {
-    fontSize: 14,
-    color: '#757575',
+    fontWeight: '400',
+    color: '#FFFFFF', // White text color for better contrast
   },
 });
 

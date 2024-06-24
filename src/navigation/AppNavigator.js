@@ -12,8 +12,24 @@ const AppNavigator = () => {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Splash" screenOptions={{ headerShown: true }}>
         <Stack.Screen options={{ headerShown: false }} name="Splash" component={SplashScreen} />
-        <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Menú principal' }}/>
-        <Stack.Screen name="Details" component={DetailScreen} options={{ title: 'Información' }} />
+        <Stack.Screen name="Home" component={HomeScreen} options={{ 
+          title: 'Menú principal',
+          headerTintColor: '#fff',
+          headerStyle: {
+            backgroundColor: '#303F9F',
+          },
+          headerTitleStyle: {
+            textAlign: 'left',
+          }
+          }}/>
+        <Stack.Screen name="Details" component={DetailScreen} 
+        options={{ 
+          title: 'Información',
+          headerTintColor: '#fff',
+          headerStyle: {
+            backgroundColor: '#303F9F',
+          },
+          }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

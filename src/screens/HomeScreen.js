@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { View, FlatList, StyleSheet, TextInput } from 'react-native';
+import { View, FlatList, StyleSheet, TextInput, Dimensions } from 'react-native';
 import ListItem from '../components/ListItem';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const HomeScreen = ({ navigation }) => {
   const items = [
@@ -110,6 +112,7 @@ const HomeScreen = ({ navigation }) => {
   const handlePress = (item) => {
     navigation.navigate('Details', { item });
   };
+  
   const handleSearch = (text) => {
     setSearchText(text);
     if (text) {
@@ -124,12 +127,14 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+     <View style={styles.containerSearch}>
       <TextInput
-        style={styles.searchInput}
-        placeholder="Buscar..."
-        value={searchText}
-        onChangeText={handleSearch}
-      />
+          style={styles.searchInput}
+          placeholder="Buscar..."
+          value={searchText}
+          onChangeText={handleSearch}
+        />
+     </View>
       <FlatList
         data={filteredData}
         keyExtractor={(item) => item.id}
@@ -145,15 +150,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F5F5F5', // Light background color to highlight the shadows
-    padding: 16,
+/*     padding: 16, */
+  },
+  containerSearch: {
+    backgroundColor: '#303F9F',
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    width: SCREEN_WIDTH, // Deja espacio a los lados similar al paddingHorizontal
+    alignSelf: 'center', // Centra el contenedor horizontalmente
   },
   searchInput: {
     height: 40,
-    borderColor: '#BDBDBD', // Divider color
+    borderColor: '#3F51B5', // Divider color
     borderWidth: 1,
     borderRadius: 8,
     paddingHorizontal: 16,
-    marginBottom: 16,
+    /* marginBottom: 16, */
     backgroundColor: '#fff',
   },
 });
