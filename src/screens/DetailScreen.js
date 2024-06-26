@@ -35,7 +35,7 @@ return (
       
       <AccordionSection title="Objetivo" content={item.objetivo} />
       <AccordionSection title="Malla" content={item.malla}></AccordionSection>
-      
+      <Text style={styles.datos}>Galería</Text>
       <ImageGallery images={galleryImages} />
 
       <TouchableOpacity style={styles.whatsappButton} onPress={handleWhatsAppPress}>
@@ -76,7 +76,6 @@ const styles = StyleSheet.create({
   datos: {
     fontSize: 16,
     color: '#757575', // Secondary text color
-    padding: 16,
   },
   whatsappButton: {
     backgroundColor: '#25D366',

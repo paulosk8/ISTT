@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const AccordionSection = ({ title, content }) => {
   const [expanded, setExpanded] = useState(false);
@@ -12,6 +13,11 @@ const AccordionSection = ({ title, content }) => {
     <View style={styles.container}>
       <TouchableOpacity onPress={toggleExpand} style={styles.header}>
         <Text style={styles.title}>{title}</Text>
+        <Icon
+          name={expanded ? 'expand-less' : 'expand-more'}
+          size={24}
+          color="#757575" // Secondary text color
+        />
       </TouchableOpacity>
       {expanded && (
         <View style={styles.content}>
@@ -24,26 +30,23 @@ const AccordionSection = ({ title, content }) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#3F51B5', // Divider color
   },
   header: {
-    padding: 16,
-    backgroundColor: '#3F51B5',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 16,
+    paddingHorizontal: 8,
   },
   title: {
-    fontSize: 20,
+    fontSize: 16,
     fontWeight: 'bold',
-    color: '#FFFFFF',
+    color: '#3F51B5', // Primary text color
   },
   content: {
     padding: 16,
-    backgroundColor: '#C5CAE9',
-    borderTopWidth: 1,
-    borderTopColor: '#BDBDBD',
-  },
-  contentText: {
-    fontSize: 16,
-    color: '#212121',
   },
 });
 

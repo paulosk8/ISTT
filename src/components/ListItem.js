@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden', // Ensure child elements are clipped to the border radius
     alignSelf: 'center', // Centra el contenedor horizontalmente
     // Shadow for iOS
-    shadowColor: '#000',
+    shadowColor: '#3F51B5',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 2,
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   },
   imageBackground: {
     width: '100%',
-    height: 160,
+    height: 180,
     justifyContent: 'flex-end', // Align overlay at the bottom
   },
   image: {
