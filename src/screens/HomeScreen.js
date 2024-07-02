@@ -125,23 +125,25 @@ const HomeScreen = ({ navigation }) => {
     }
   };
 
+
+
   return (
     <View style={styles.container}>
-     <View style={styles.containerSearch}>
-      <TextInput
-          style={styles.searchInput}
-          placeholder="Buscar..."
-          value={searchText}
-          onChangeText={handleSearch}
+      <View style={styles.containerSearch}>
+        <TextInput
+            style={styles.searchInput}
+            placeholder="Buscar..."
+            value={searchText}
+            onChangeText={handleSearch}
+          />
+      </View>
+        <FlatList
+          data={filteredData}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <ListItem item={item} onPress={handlePress} />
+          )}
         />
-     </View>
-      <FlatList
-        data={filteredData}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <ListItem item={item} onPress={handlePress} />
-        )}
-      />
     </View>
   );
 };
@@ -153,7 +155,7 @@ const styles = StyleSheet.create({
 /*     padding: 16, */
   },
   containerSearch: {
-    backgroundColor: '#303F9F',
+    /* backgroundColor: '#303F9F', */
     paddingHorizontal: 16,
     paddingVertical: 10,
     width: SCREEN_WIDTH, // Deja espacio a los lados similar al paddingHorizontal

@@ -2,10 +2,12 @@ import React from 'react';
 import { View, Text, ImageBackground, StyleSheet, TouchableOpacity, Linking, ScrollView } from 'react-native';
 import ImageGallery from '../components/ImageGallery';
 import AccordionSection from '../components/AccordionSection';
+import { useNavigation } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const DetailScreen = ({ route }) => {
   const { item } = route.params;
-
+  const navigation = useNavigation();
   const galleryImages = [
     require('../../assets/images/gallery/sprl.jpg'),
     require('../../assets/images/gallery/sprl.jpg'),
@@ -28,6 +30,9 @@ return (
     <ScrollView style={styles.container}>
       <ImageBackground source={item.image} style={styles.imageBackground} imageStyle={styles.image}>
         <View style={styles.overlay}>
+        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+            <Icon name="arrow-back" size={24} color="#FFFFFF" />
+          </TouchableOpacity>
           <Text style={styles.title}>{item.title}</Text>
         </View>
       </ImageBackground>
@@ -60,6 +65,11 @@ const styles = StyleSheet.create({
   },
   image: {
     borderRadius: 8,
+  },
+  backButton: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
