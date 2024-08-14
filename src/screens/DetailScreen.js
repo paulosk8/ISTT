@@ -1,51 +1,68 @@
-import React from 'react';
-import { View, Text, ImageBackground, StyleSheet, TouchableOpacity, Linking, ScrollView } from 'react-native';
-import ImageGallery from '../components/ImageGallery';
-import AccordionSection from '../components/AccordionSection';
-import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import React, { useState } from 'react';
+import { View, Text, ImageBackground, Image, StyleSheet, FlatList, TouchableOpacity, ScrollView, Modal } from 'react-native';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
-const DetailScreen = ({ route }) => {
+const DetailScreen = ({ route, navigation }) => {
   const { item } = route.params;
-  const navigation = useNavigation();
-  const galleryImages = [
-    require('../../assets/images/gallery/sprl.jpg'),
-    require('../../assets/images/gallery/sprl.jpg'),
-    require('../../assets/images/gallery/sprl.jpg'),
-    // Agrega más imágenes según sea necesario
-  ];
+  const [visible, setVisible] = useState(false);
+  const [images, setImages] = useState([]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const handleWhatsAppPress = () => {
-    const phoneNumber = '+593980228166'; // Reemplaza con tu número de WhatsApp
-    const message = 'Hola, me gustaría obtener más información.';
-    const url = `whatsapp://send?phone=${phoneNumber}&text=${encodeURIComponent(message)}`;
-
-    Linking.openURL(url).catch((err) =>
-      console.error("Error al abrir WhatsApp:", err)
-    );
+  const openImageViewer = (imageUris, index) => {
+    setImages(imageUris.map(uri => ({ url: uri })));
+    setSelectedIndex(index);
+    setVisible(true);
   };
 
-
-return (
+  return (
     <ScrollView style={styles.container}>
-      <ImageBackground source={item.image} style={styles.imageBackground} imageStyle={styles.image}>
+      <ImageBackground source={{ uri: item.image }} style={styles.imageBackground}>
         <View style={styles.overlay}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
-            <Icon name="arrow-back" size={24} color="#FFFFFF" />
-          </TouchableOpacity>
           <Text style={styles.title}>{item.title}</Text>
         </View>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
+          <Text style={styles.backButtonText}>← Back</Text>
+        </TouchableOpacity>
       </ImageBackground>
-      <Text style={styles.datos}>{item.datos}</Text>
-      
-      <AccordionSection title="Objetivo" content={item.objetivo} />
-      <AccordionSection title="Malla" content={item.malla}></AccordionSection>
-      <Text style={styles.datos}>Galería</Text>
-      <ImageGallery images={galleryImages} />
 
-      <TouchableOpacity style={styles.whatsappButton} onPress={handleWhatsAppPress}>
-        <Text style={styles.whatsappButtonText}>Iniciar chat por WhatsApp</Text>
-      </TouchableOpacity>
+      <View style={styles.detailsContainer}>
+        <Text style={styles.sectionTitle}>Tītulo a obtener</Text>
+        <Text style={styles.description}>{item.titleStudent}</Text>
+        <Text style={styles.sectionTitle}>Horario</Text>
+        <Text style={styles.description}>{item.horario}</Text>
+        <Text style={styles.sectionTitle}>Modalidad</Text>
+        <Text style={styles.description}>{item.modalidad}</Text>
+        <Text style={styles.sectionTitle}>Sección</Text>
+        <Text style={styles.description}>{item.seccion}</Text>
+
+        <Text style={styles.sectionTitle}>Malla Curricular</Text>
+        <TouchableOpacity onPress={() => openImageViewer([item.malla], 0)}>
+          <Image source={{ uri: item.malla }} style={styles.mallaImage} />
+        </TouchableOpacity>
+
+        <Text style={styles.sectionTitle}>Galería de Imágenes</Text>
+        <FlatList
+          data={item.gallery}
+          keyExtractor={(imageUri, index) => index.toString()}
+          horizontal
+          renderItem={({ item: imageUri, index }) => (
+            <TouchableOpacity onPress={() => openImageViewer(item.gallery, index)}>
+              <Image source={{ uri: imageUri }} style={styles.galleryImage} />
+            </TouchableOpacity>
+          )}
+        />
+      </View>
+      <Modal visible={visible} transparent={true}>
+        <ImageViewer
+          imageUrls={images}
+          index={selectedIndex}
+          onSwipeDown={() => setVisible(false)}
+          enableSwipeDown={true}
+        />
+      </Modal>
     </ScrollView>
   );
 };
@@ -53,53 +70,60 @@ return (
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#F5F5F5',
   },
   imageBackground: {
     width: '100%',
-    height: 300,
-    marginBottom: 16,
-    justifyContent: 'center', // Center content vertically
-    alignItems: 'center', // Center content horizontally
-  },
-  image: {
-    borderRadius: 8,
-  },
-  backButton: {
-    position: 'absolute',
-    top: 10,
-    left: 10,
+    height: 250,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(63, 81, 181, 0.6)', // Primary color with 60% opacity
-    justifyContent: 'center', // Center content vertically
-    alignItems: 'center', // Center content horizontally
-    borderRadius: 8,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#FFFFFF', // White text color for better contrast
-  },
-  datos: {
-    fontSize: 16,
-    color: '#757575', // Secondary text color
-  },
-  whatsappButton: {
-    backgroundColor: '#25D366',
-    paddingVertical: 12,
-    paddingHorizontal: 32,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginVertical: 20,
-    marginHorizontal: 16,
-  },
-  whatsappButtonText: {
-    fontSize: 18,
     color: '#FFFFFF',
     fontWeight: 'bold',
+  },
+  backButton: {
+    position: 'absolute',
+    top: 20,
+    left: 20,
+    backgroundColor: '#303F9F',
+    padding: 10,
+    borderRadius: 5,
+  },
+  backButtonText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+  },
+  detailsContainer: {
+    padding: 20,
+  },
+  sectionTitle: {
+    fontSize: 20,
+    color: '#212121',
+    marginBottom: 10,
+  },
+  description: {
+    fontSize: 16,
+    color: '#757575',
+    marginBottom: 20,
+  },
+  mallaImage: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'contain',
+    marginBottom: 20,
+  },
+  galleryImage: {
+    width: 150,
+    height: 150,
+    marginRight: 10,
   },
 });
 

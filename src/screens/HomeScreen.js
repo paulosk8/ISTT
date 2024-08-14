@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
 import { View, FlatList, StyleSheet, TextInput, Dimensions, Image, Text, TouchableOpacity } from 'react-native';
 import { db } from '../../firebase';
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 const HomeScreen = ({ navigation }) => {
   const [carreras, setItems] = useState([]);
@@ -53,7 +52,7 @@ const HomeScreen = ({ navigation }) => {
         data={filteredItems}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigation.navigate('Detail', { item })}>
+          <TouchableOpacity onPress={() => navigation.navigate('Details', { item })}>
             <View style={styles.itemContainer}>
               <Image source={{ uri: item.image }} style={styles.image} />
               <View style={styles.overlay}>
