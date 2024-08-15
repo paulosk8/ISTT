@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { collection, getDocs } from 'firebase/firestore';
-import { View, FlatList, StyleSheet, TextInput, Dimensions, Image, Text, TouchableOpacity } from 'react-native';
+import { View, FlatList, StyleSheet, TextInput, Image, Text, TouchableOpacity } from 'react-native';
 import { db } from '../../firebase';
 
 const HomeScreen = ({ navigation }) => {
